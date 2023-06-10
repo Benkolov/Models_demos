@@ -13,6 +13,7 @@
         {% for employee in employees %}
             <div>
             {{ employee.first_name }} {{ employee.last_name }} - {{ employee.department.name}}
+            <a href="{% url 'delete_employee' pk=employee.pk %}">Delete</a>
             </div>
         {% endfor %}
     </div>
@@ -20,6 +21,7 @@
         {% for employee in employees2 %}
             <div>
             {{ employee.first_name }} {{ employee.last_name }} - {{ employee.department.name}}
+            <a href="{% url 'delete_employee' pk=employee.pk %}">Delete</a>
             </div>
         {% endfor %}
     </div>
