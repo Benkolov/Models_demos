@@ -1,5 +1,12 @@
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.urls import reverse
+
+
+def above_eighteen(value):
+    if value < 18:
+        raise ValidationError("Age must be above 18.")
+    return value
 
 
 class ModifiedMixin(models.Model):
@@ -44,11 +51,11 @@ class Employees(models.Model):
 
     description = models.TextField(default="Should be filled in.")
 
-    age = models.IntegerField()  # - +
+    age = models.IntegerField(validators=[above_eighteen])
     experience = models.PositiveIntegerField()
     birth_date = models.DateField()
-    created_on = models.DateTimeField(auto_now_add=True)  # only first time
-    updated_on = models.DateTimeField(auto_now=True)  # each time update
+    created_on = models.DateTimeField(auto_now_add=True)
+    updated_on = models.DateTimeField(auto_now=True)
 
     is_manager = models.BooleanField(default=None)
 
