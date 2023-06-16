@@ -1,12 +1,22 @@
 from django.db import models
+from django.urls import reverse
+
+
+class ModifiedMixin(models.Model):
+    created_on = models.DateTimeField(auto_now_add=True)
+    updated_on = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        abstract = True
 
 
 class EmployeeProject(models.Model):
     employee_id = models.ForeignKey('Employees', on_delete=models.CASCADE)
 
 
-class Department(models.Model):
+class Department(ModifiedMixin, models.Model):
     name = models.CharField(max_length=40)
+    slug = models.SlugField(max_length=40, null=True, unique=True)
 
     def __str__(self):
         return f"{self.pk} {self.name}"
@@ -52,6 +62,9 @@ class Employees(models.Model):
 
     def __str__(self):
         return f"ID: {self.pk}; Names: {self.full_name}"
+
+    def get_absolute_url(self):
+        return reverse('employee_details', kwargs={'pk': self.pk})
 
 
 class Profile(models.Model):
